@@ -41,11 +41,39 @@ def home():
     return render_template("index.html")
 
 
-@app.route('/add')
+@app.route('/add', methods=['GET', 'POST'])
 def add_cafe():
     form = CafeForm()
     if form.validate_on_submit():
         print("True")
+
+        print(form.cafe.data)
+        print(form.opening_time.data)
+        print(form.ratings.choices)
+
+        print(form.data)
+
+        data_string = ""
+        for key, value in form.data.items():
+            if key == "ratings":
+                print(value)
+                print(dict(form.ratings.choices).get(value))
+                data_string += f"{dict(form.ratings.choices).get(value)},"
+            elif key == "wifi_strength_rating":
+                data_string += f"{dict(form.wifi_strength_rating.choices).get(value)},"
+            elif key == "power_socket_availability":
+                data_string += f"{dict(form.power_socket_availability.choices).get(value)},"
+            elif key in ("cafe", "location", "opening_time", "closing_time"):
+                data_string += f"{value},"
+
+        print(data_string[:-1])
+        final_string = data_string[:-1]
+        with open("cafe-data.csv", "a", encoding="utf-8") as data_file:
+            data_file.write(f"\n{final_string}")
+
+
+    else:
+        print("False")
     # Exercise:
     # Make the form write a new row into cafe-data.csv
     # with   if form.validate_on_submit()
