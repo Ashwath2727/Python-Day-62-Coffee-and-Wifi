@@ -59,6 +59,9 @@ def cafes():
         list_of_rows = []
         for row in csv_data:
             list_of_rows.append(row)
+
+    print(list_of_rows)
+    print("https://goo.gl/maps/13Tjc36HuPWLELaSA"[0:5])
     return render_template('cafes.html', cafes=list_of_rows)
 
 
